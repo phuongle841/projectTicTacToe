@@ -1,11 +1,26 @@
-container = document.querySelector(".container");
-console.log(container);
-var initUI = {
-  cacheDOM: function () {},
-  createBoxes: function () {},
-  bindingEvents: function () {},
-  bindingRelationship: function () {},
-};
+(function () {
+  const initUI = {
+    boxes: [],
+    cacheDOM: function () {
+      container = document.querySelector(".container");
+    },
+    createBoxes: function () {
+      for (let index = 0; index < 6; index++) {
+        const element = (6)[index];
+        let box = document.createElement("div");
+        this.boxes.push(box);
+      }
+    },
+    bindingEvents: function () {
+      this.boxes.forEach((element) => {
+        // add eventListener
+      });
+    },
+    bindingRelationship: function () {},
+  };
+  initUI.createBoxes();
+  initUI.bindingEvents();
+})();
 var initLogic = {
   reset: function () {},
   addX: function () {},
