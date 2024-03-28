@@ -1,28 +1,36 @@
-const Player = function () {};
+const Player = (function (name) {
+  this.name = name;
+  function getName() {
+    return this.name;
+  }
+  return { getName: getName };
+})();
 const initLogic = (function () {
   const board = [
-    ["1", "1", "1"],
-    ["1", "1", "1"],
-    ["1", "1", "1"],
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""],
   ];
-  const player1 = Player;
-  const player2 = Player;
-
-  const turn = [player1, player2];
+  let turn = false;
+  function returnTurn() {
+    turn ? (turn = false) : (turn = true);
+    return turn;
+  }
   function reset(area) {}
   function add(number, type) {
     let [X, Y] = toCoordinate(number);
-
-    console.log(board[X][Y]);
+    board[X][Y] = type;
+    console.log(board);
   }
   function toCoordinate(number) {
     let X = Math.floor(number / 3);
-    let Y = number - 3 * X;
+    let Y = number - board.length * X;
     return [X, Y];
   }
   function checkWinner(params) {}
-  return { add: add };
+  return { add: add, returnTurn: returnTurn };
 })();
+
 let UI = (function () {
   const initUI = {
     boxes: [],
@@ -42,15 +50,27 @@ let UI = (function () {
       this.boxes.forEach((element) => {
         // add eventListener
         element.classList.add("box");
-        element.addEventListener("click", this.markX.bind(this), {
-          once: true,
-        });
+        element.addEventListener(
+          "click",
+          initLogic.returnTurn()
+            ? this.markO.bind(this)
+            : this.markX.bind(this),
+          {
+            once: false,
+          }
+        );
       });
     },
     bindingRelationship: function () {
       this.boxes.forEach((element) => {});
     },
     // event when user click
+    turnEvent: function (e) {
+      let turn = initLogic.returnTurn();
+      let box = e.target;
+      console.log(box);
+      !turn ? this.markX(box) : this.markO.bind(this);
+    },
     markX: function (e) {
       if (e.target.dataset.number) {
         e.target.classList.add("marked");
@@ -59,14 +79,18 @@ let UI = (function () {
         e.target.appendChild(XLeft);
         e.target.appendChild(XRight);
         initLogic.add(e.target.dataset.number, "X");
+        console.log(initLogic.returnTurn());
       }
     },
     markO: function (e) {
-      e.target.classList.add("marked");
-      let innerO = this.createElement("div", "markIn");
-      let outerO = this.createElement("div", "markOut");
-      e.target.appendChild(innerO);
-      e.target.appendChild(outerO);
+      if (e.target.dataset.number) {
+        e.target.classList.add("marked");
+        let innerO = this.createElement("div", "markIn");
+        let outerO = this.createElement("div", "markOut");
+        e.target.appendChild(innerO);
+        e.target.appendChild(outerO);
+        initLogic.add(e.target.dataset.number, "O");
+      }
     },
     createElement: function (type, className) {
       let element = document.createElement(type);
