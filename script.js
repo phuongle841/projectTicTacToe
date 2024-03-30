@@ -1,10 +1,10 @@
-const Player = (function (name) {
+const Player = function (name) {
   this.name = name;
   function getName() {
     return this.name;
   }
   return { getName: getName };
-})();
+};
 const initLogic = (function () {
   const board = [
     ["", "", ""],
@@ -38,7 +38,7 @@ let UI = (function () {
       this.container = document.querySelector(".container");
     },
     createBoxes: function () {
-      for (let index = 0; index < 9; index++) {
+      for (let index = 0; index < 1; index++) {
         const element = (9)[index];
         let box = document.createElement("div");
         this.boxes.push(box);
@@ -105,3 +105,35 @@ let UI = (function () {
   initUI.createBoxes();
   initUI.bindingEvents();
 })();
+let boardFactory = function () {
+  let factory = [];
+  function addCell(cell) {
+    factory.push(cell);
+  }
+  function markCell(number) {
+    console.log(number);
+  }
+  function display() {
+    console.log(factory);
+  }
+  return { addCell: addCell, markCell: markCell, display: display };
+};
+
+let cell = function (entity, number) {
+  this.entity = entity;
+  this.number = number;
+  function mark(type) {}
+  function display() {}
+  return { mark: mark, display: display };
+};
+let createobject = function () {
+  let entity = document.createElement("a");
+  return entity;
+};
+let board = boardFactory();
+let object = createobject();
+console.log(object);
+let cell1 = cell(object, 0);
+cell1.display();
+board.addCell(cell1);
+board.display();
