@@ -107,33 +107,66 @@ let UI = (function () {
 })();
 let boardFactory = function () {
   let factory = [];
+  let cellNumber = 9;
+  function createBoard() {
+    let board = createobject();
+    board.entity.addEventListener("click", calculateClickPoint);
+    board.entity.style.width = "600px";
+    board.entity.style.height = "600px";
+    board.entity.style.backgroundColor = "#69cc4b";
+
+    document.body.appendChild(board.entity);
+  }
+  function calculateClickPoint(e) {
+    console.log(e.offsetX);
+    console.log(e.offsetY);
+    return;
+  }
   function addCell(cell) {
     factory.push(cell);
   }
-  function markCell(number) {
-    console.log(number);
+  function markCell(number, type) {
+    if (number > 0 && number < cellNumber) {
+      factory[8].mark(type);
+    } else if (number < 0) {
+      console.log("number under-defined");
+    } else if (number > cellNumber) {
+      console.log("number over-defined");
+    } else {
+      console.log("undefined number");
+    }
   }
   function display() {
-    console.log(factory);
+    createBoard();
+    return factory;
   }
   return { addCell: addCell, markCell: markCell, display: display };
 };
 
-let cell = function (entity, number) {
-  this.entity = entity;
+let cell = function (number) {
+  this.entity = createobject();
   this.number = number;
-  function mark(type) {}
-  function display() {}
-  return { mark: mark, display: display };
+  function mark(type) {
+    if (type == "X") {
+      entity.entity.style.height = "180px";
+      entity.entity.style.width = "180px";
+    } else if (type == "O") {
+      console.log(type);
+    } else {
+      console.log("undefined typed");
+    }
+  }
+  return { mark: mark };
 };
 let createobject = function () {
-  let entity = document.createElement("a");
-  return entity;
+  let entity = document.createElement("div");
+  return { entity: entity };
 };
+// the process create  board
+// create cell hold the object and add x or o into them
 let board = boardFactory();
-let object = createobject();
-console.log(object);
-let cell1 = cell(object, 0);
-cell1.display();
-board.addCell(cell1);
+for (let index = 0; index < 9; index++) {
+  let cellInstance = cell(index);
+  board.addCell(cellInstance);
+}
 board.display();
