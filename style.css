@@ -1,31 +1,13 @@
-.board {
-  display: grid;
-  height: 500px;
-  width: 500px;
-  grid-template-columns: repeat(7, 1fr);
-  grid-template-rows: repeat(6, 1fr);
-  border: 1px solid black;
-  gap: 2px;
-  padding: 2px;
-  background-color: yellow;
-}
-
-.cell {
+body {
   display: flex;
-  justify-content: center;
   align-items: center;
-  text-align: center;
-  font-size: 2rem;
-  border: 1px solid grey;
-  background: lightyellow;
-  cursor: pointer;
+  justify-content: center;
 }
-
 .myBoard {
+  width: 600px;
+  height: 600px;
   display: grid;
   grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-  width: 900px;
-  height: 900px;
   border: 1px solid black;
   gap: 2px;
   padding: 2px;
